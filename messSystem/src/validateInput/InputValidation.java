@@ -1,6 +1,8 @@
 package validateInput;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,7 +10,6 @@ import com.core.Customer;
 import com.core.Plan;
 
 import custom.exception.InvalidInput;
-import java.util.Scanner;
 
 
 public class InputValidation {
@@ -101,6 +102,24 @@ public class InputValidation {
 	   		
 	   		return new Customer(customerId,firstName,lastName,validemail,pass,custaddress,date,endPlanDate,mobile, plan,amount);
 	   	}
+		public static void validateSignIn(String email,String password,Map<Integer,Customer>map)throws InvalidInput{
+			boolean emailFound = false;
+			for( Customer c:map.values()) {
+				if(c.getEmail().equals(email)) {
+					emailFound = true;
+					if(c.getPassword().equals(password)) {
+						
+						return;
+					}
+					else {
+						throw new InvalidInput("Wrong Password");
+					}
+				}				
+			}
+			if (!emailFound) {
+		        throw new InvalidInput("Wrong Email");
+		    }
+		}
 	   		
 	   	
 	        
