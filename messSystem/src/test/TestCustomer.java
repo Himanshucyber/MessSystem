@@ -42,12 +42,43 @@ public class TestCustomer {
 				//validateAllInput(int customerId,String firstName,String lastName,String userEmail,String pass,String custaddress,String openingDate,String endDate,String phone,String messPlan)
 				Customer customer1=InputValidation.validateAllInput(sc.nextInt(),sc.next(),sc.next(),sc.next(), sc.next(), sc.next(),sc.next(),sc.next(),sc.next());
 				customerData.put(customer1.getCustId(), customer1);
+				System.out.println("Sign Up Success!");
 				break;
 			case 2:
+				String inputEmail;
+				String passCode;
+				System.out.print("Enter Your Email : ");
+				inputEmail=sc.next();
+				System.out.print("Enter Your Passworrd : ");
+				passCode=sc.next();
+				InputValidation.validateSignIn(inputEmail,passCode,customerData);
+				System.out.println("Successful login");
+				
 				break;
 			case 3:
+				String Email;
+				String oldPassWord;
+				System.out.print("Enter Your Email : ");
+				Email=sc.next();
+				System.out.print("Enter Your old Passworrd : ");
+				oldPassWord=sc.next();
+				for( Customer c:customerData.values()) {
+					if(c.getEmail().equals(Email)) {
+						
+						if(c.getPassword().equals(oldPassWord)) {
+							System.out.print("Enter new Passworrd : ");
+							c.setPassword(sc.next());
+							
+						}
+						else {
+							throw new InvalidInput("Wrong Password");
+						}
+					}				
+				}
+				System.out.print("Password Change Successfull ! ");
 				break;
 			case 4:
+				
 				break;
 			case 5:
 				break;
@@ -74,6 +105,7 @@ public class TestCustomer {
 				break;
 			default:
 				System.out.println("Invalid Choice");
+				System.out.println("");
 				break;
 				
 			
