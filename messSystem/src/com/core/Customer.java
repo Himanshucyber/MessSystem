@@ -114,6 +114,9 @@ public class Customer {
 	public double getFinal_amount() {
 		return final_amount;
 	}
+	public void setFinal_amount(double amount) {
+		this.final_amount=amount;
+	}
 
 	
 	@Override

@@ -30,7 +30,7 @@ public class InputValidation {
 //		}
 	public static Plan parseandvalidateplan(String plan)throws IllegalArgumentException {
       
-	  return Plan.valueOf(plan);
+	  return Plan.valueOf(plan.toUpperCase());
 		
 	}
 	public static String validatePhone(String phone)throws InvalidInput{
@@ -119,6 +119,20 @@ public class InputValidation {
 			if (!emailFound) {
 		        throw new InvalidInput("Wrong Email");
 		    }
+		}
+		public static void unsubsCustomerByPlan(String plan,Map<Integer,Customer>map) {
+			
+			Plan planType=parseandvalidateplan(plan);
+			for(Customer customer : map.values()) {
+				
+				if(customer.getPlan().equals(planType)) {
+					 map.remove(customer.getCustId());
+					 System.out.println("Customer removed");
+				}
+				else {
+					System.out.println("No Such Customer is present");
+				}
+			}
 		}
 	   		
 	   	
