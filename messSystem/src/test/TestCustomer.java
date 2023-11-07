@@ -1,18 +1,20 @@
 package test;
 
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Scanner;
 
 import com.core.Customer;
+import com.core.Plan;
 
 import custom.exception.InvalidInput;
+import utils.CustomerDataUtil;
 import validateInput.InputValidation;
 
 public class TestCustomer {
 
 	public static void main(String[] args) throws InvalidInput {
-		Map<Integer, Customer> customerData = new HashMap<>();
+		Map<Integer, Customer> customerData = CustomerDataUtil.populateCustomer();
 
 		try(Scanner sc = new Scanner(System.in)){
 		int choice;
@@ -29,9 +31,9 @@ public class TestCustomer {
 					+ "6: Display all Customers \r\n"
 					+ "7: Modify all customers first name (make first Letter capital of customers first name)\r\n"
 					+ "8: Display email addresses of the customers who did registration in month of January \r\n"
-					+ "10: Display count of the Customers who have register for plan: Monthly \r\n"
-					+ "11: Search the Customer who lived in Akurdi.\r\n"
-					+ "12: Give the 20% discount to the customers who have selected plan for 1 year.\r\n"
+					+ "9: Display count of the Customers who have register for plan: Monthly \r\n"
+					+ "10: Search the Customer who lived in Akurdi.\r\n"
+					+ "11: Give the 20% discount to the customers who have selected plan for 1 year.\r\n"
 					+ "0: Exit \r\n"
 					);
 			choice=sc.nextInt();
@@ -44,6 +46,7 @@ public class TestCustomer {
 				customerData.put(customer1.getCustId(), customer1);
 				System.out.println("Sign Up Success!");
 				break;
+
 			case 2:
 				String inputEmail;
 				String passCode;
@@ -78,9 +81,12 @@ public class TestCustomer {
 				System.out.print("Password Change Successfull ! ");
 				break;
 			case 4:
-				
+
 				break;
 			case 5:
+				InputValidation.unsubsCustomerByPlan(sc.next(),customerData);
+				
+				
 				break;
 			case 6:
 				customerData.forEach((customerId, customer) -> {
@@ -88,20 +94,74 @@ public class TestCustomer {
 		        });
 				break;
 			case 7:
+				customerData.forEach((customerId, customer) -> {
+					String firstName=customer.getFirstName();
+					customer.setFirstName(Character.toUpperCase(firstName.charAt(0))+firstName.substring(1));
+		        });
+				System.out.println("Successfully Change First Latter of first name Capital Latter");
+//				for(Customer customer : customerData.values()) {
+//					
+//				}
+				
 				break;
 				
 			case 8:
+				// Define a pattern for the desired date format (Month and Day)
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+				
+				//Iterate through customerData(Map)  
+				customerData.forEach((customerId, customer)->{
+					if (customer.getRegisterDate().format(formatter).startsWith("01")) {
+		                System.out.println(customer);
+		            }
+					
+				});	
+//				customerData.forEach((customerId, customer) -> {
+//					String resistationDate = customer.getRegisterDate().toString();
+//					System.out.println(resistationDate);
+//					//2023-01-23
+//					if(resistationDate.charAt(6)=='0' && resistationDate.charAt(7)=='1')
+//						System.out.println(customer);
+//		        });
+				
 				break;
 			case 9:
+				//boolean isSuchCustomerPresent;
+				customerData.forEach((customerId, customer)->{
+					
+					if(customer.getPlan().equals(Plan.MONTHLY))
+					{
+						//isSuchCustomerPresent=true;
+						System.out.println(customer);
+					}
+				});
 				break;
 				
 			case 10:
+				customerData.forEach((customerId,customer)->{
+					if(customer.getAddress().contains("Akurdi") || customer.getAddress().contains("akurdi")) {
+						System.out.println(customer);
+					}
+				});
 				break;
 			case 11:
+                    customerData.forEach((customerId, customer)->{
+					
+					  if(customer.getPlan().equals(Plan.YEAR))
+					  {
+						//isSuchCustomerPresent=true;
+						double discount=customer.getFinal_amount()*0.20;
+						double new_amount=customer.getFinal_amount()-discount;
+						  
+						  customer.setFinal_amount(new_amount);
+						  
+						System.out.println(customer);
+					  }
+				    });
 				break;
-			case 12:
-				break;
+			
 			case 0:
+				System.out.println("Exiting ");
 				break;
 			default:
 				System.out.println("Invalid Choice");
