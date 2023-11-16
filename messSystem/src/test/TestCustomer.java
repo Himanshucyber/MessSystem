@@ -1,6 +1,10 @@
 package test;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -81,7 +85,31 @@ public class TestCustomer {
 				System.out.print("Password Change Successfull ! ");
 				break;
 			case 4:
+//				System.out.println(customerData.values()+"\n");
+				
+//				customerData.values().forEach(c->System.out.println(c));
+//				Collections.sort(customerList,
+//		                Comparator.comparing(Customer::getFirstName)
+//		                          .thenComparing(Customer::getRegisterDate));
 
+				List <Customer> customerList=new ArrayList<>( customerData.values());
+                Collections.sort(customerList,Comparator.comparing(Customer::getFirstName).thenComparing(Customer::getRegisterDate)
+                		.thenComparing(Customer::getPlan));
+                customerList.forEach(c->System.out.println(c));
+                
+//				 Comparator<Map.Entry<Integer, Customer>> customComparator = Comparator
+//	                .<Map.Entry<Integer, Customer>, String>comparing(entry -> entry.getValue().getFirstName()) // Sort by first name
+//	                .thenComparing(entry -> entry.getValue().getPlan()) // Then sort by plan
+//	                .thenComparing(entry -> entry.getValue().getRegisterDate()); // Finally, sort by registration date
+
+	        // Sort the map by values using the custom comparator and reconstruct it as a LinkedHashMap
+//	        Map<Integer, Customer> sortedCustomerData = customerData.entrySet()
+//	                .stream()
+//	                .sorted(customComparator)
+//	                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+	        
+//	         sortedCustomerData.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
+	        
 				break;
 			case 5:
 				InputValidation.unsubsCustomerByPlan(sc.next(),customerData);
